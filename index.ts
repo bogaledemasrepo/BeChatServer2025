@@ -1,6 +1,7 @@
 import express, { type Request, type Response } from 'express';
 import dotenv from "dotenv";
 import authRouter from './routes/authRoute';
+import userRouter from './routes/userRoute';
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,8 @@ const handleHealth = (req: Request, res: Response) => {
 
 app.get(`/api/health`, handleHealth);
 app.use('/api/auth', authRouter);
+app.use("/api/users", userRouter);
+
 cronJob.start();
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}/api/health`);

@@ -8,6 +8,13 @@
       "when": 1766140411149,
       "tag": "0000_curly_cerise",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1766169056746,
+      "tag": "0001_shallow_network",
+      "breakpoints": true
     }
   ]
 }
