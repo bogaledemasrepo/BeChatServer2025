@@ -1,0 +1,27 @@
+import express, { type Request, type Response } from 'express';
+import { authMiddleware } from '../middlewares/authMiddleware';
+
+const userRouter = express.Router();
+
+userRouter.get('/me',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User me route is working!"})
+})
+.get('/',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User route is working!"})
+})
+.get('/paged',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User paged route is working!"})
+})
+.get('/:id',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User id route is working!"})
+})
+.put('/:id',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User id route is working!"})
+})
+.delete('/:id',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User id route is working!"})
+})
+.get('/friends',authMiddleware,(req: Request, res: Response) => {
+  res.status(200).json({message:"User friends route is working!"})
+});
+export default userRouter;

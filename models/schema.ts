@@ -1,4 +1,4 @@
-import { pgTable, varchar,uuid,text,timestamp, date, pgEnum} from "drizzle-orm/pg-core";
+import { pgTable, varchar,uuid,text,timestamp, date, pgEnum,boolean} from "drizzle-orm/pg-core";
 
 export const UserRole=pgEnum("userRole",["ADMIN","CUSTOMER"]);
 export const OrderStatus=pgEnum("orderStatus",["PENDING","ORDERED","SHIPPED","DELIVERED"]);
@@ -20,3 +20,12 @@ export const ProfileTable = pgTable("profile", {
   userId:uuid("userId").references(()=>UsersTable.id).notNull()
 });
 
+export const MessageTable = pgTable("messages", {
+  id: uuid().primaryKey().defaultRandom().notNull(),
+  content: text("content").notNull(),
+  fileUrl: varchar("file_url",{ length: 255 }).array(),
+  senderId: uuid("sender_id").references(() => UsersTable.id).notNull(),
+  receiverId: uuid("receiver_id").references(() => UsersTable.id).notNull(),
+  unread: boolean("unread").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull()
+});
