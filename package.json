@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --watch index.ts"
+    "dev": "bun --watch index.ts",
+    "db:migrate": "bunx drizzle-kit migrate --config=drizzle.config.ts",
+    "db:generate": "bunx drizzle-kit generate --config=drizzle.config.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
@@ -13,10 +15,16 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "bcrypt": "^6.0.0",
     "cron": "^4.4.0",
     "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
-    "jwt": "^0.2.0"
+    "jsonwebtoken": "^9.0.3",
+    "postgres": "^3.4.7"
   }
 }
