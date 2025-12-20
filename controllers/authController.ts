@@ -41,7 +41,7 @@ export const handleRegister = async (req: Request, res: Response) => {
       if (!secret) {
         throw new Error("JWT_SECRET is not set");
       }
-    const token = jwt.sign({ userId: newUser.id, role: newUser.role }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: newUser.id, role: newUser.role }, secret, { expiresIn: "12h" });
 
     res.status(201).json({ token, user: { id: newUser.id, name, email, role: newUser.role,avator:newUser.avator } });
   } catch (error) {
@@ -78,7 +78,7 @@ export const handleLogin =  async (req: Request, res: Response) => {
     if (!secret) {
       throw new Error("JWT_SECRET is not set");
     }
-    const token = jwt.sign({ userId: user.id, role: user.role }, secret, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: user.id, role: user.role }, secret, { expiresIn: "12h" });
 
     res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role,avator:user.avator } });
   } catch (error) {
