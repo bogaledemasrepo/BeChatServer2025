@@ -22,7 +22,7 @@ app.get(`/api/health`, handleHealth);
 app.use('/api/auth', authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/messages",messagesRouter);
-app.use("api/requests",requestRouter)
+app.use("/api/requests",requestRouter)
 
 cronJob.start();
 
