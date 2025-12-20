@@ -15,6 +15,13 @@
       "when": 1766169056746,
       "tag": "0001_shallow_network",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1766191392404,
+      "tag": "0002_small_kylun",
+      "breakpoints": true
     }
   ]
 }

@@ -8,6 +8,7 @@ userRouter.get('/me',authMiddleware,(req: Request, res: Response) => {
   res.status(200).json({message:"User me route is working!"})
 })
 .get('/friends',authMiddleware,getFriendsList)
+
 .get('/paged',authMiddleware,(req: Request, res: Response) => {
   res.status(200).json({message:"User paged route is working!"})
 })
@@ -19,8 +20,5 @@ userRouter.get('/me',authMiddleware,(req: Request, res: Response) => {
 })
 .delete('/:id',authMiddleware,(req: Request, res: Response) => {
   res.status(200).json({message:"User id route is working!"})
-})
-.get('/friends',authMiddleware,(req: Request, res: Response) => {
-  res.status(200).json({message:"User friends route is working!"})
 });
 export default userRouter;
