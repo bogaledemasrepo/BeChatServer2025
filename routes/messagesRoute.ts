@@ -1,11 +1,12 @@
-import express, { type Request, type Response } from 'express';
+import express from 'express';
 import { authMiddleware } from '../middlewares/authMiddleware';
-import { getProfile, handleLogin, handleRegister } from '../controllers/authController';
+import { deleteMessage, markMessageAsRead, sendMessage, updateMessage } from '../controllers/messageService';
 
-const messagesRoute = express.Router();
+const messagesRouter = express.Router();
 
-messagesRoute.get('/me',authMiddleware,getProfile)
-.post('/login',authMiddleware,handleLogin)
-.post('/register',authMiddleware,handleRegister)
+messagesRouter.post('/',authMiddleware,sendMessage)
+.get('/markRead',authMiddleware,markMessageAsRead)
+.put('/:id',authMiddleware,updateMessage)
+.delete('/:id',authMiddleware,deleteMessage);
 
-export default messagesRoute;
+export default messagesRouter;
