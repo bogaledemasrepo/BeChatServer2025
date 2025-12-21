@@ -9,15 +9,17 @@ export const sendMessage = async (req: Request & { user?: { id: string; role: st
       return res.status(401).json({ error: "Unauthorized" });
     }
     const { receiverId, content } = req.body;
+
+    console.log("Send message req body ",req.body,req.user)
     if (!receiverId || !content) {
       return res.status(400).json({ error: "Recipient ID and content are required" });
     }
 
     const newMessage = await db.insert(MessageTable).values({
-      senderId: req.user.id,
-      receiverId,
-      content,
-      createdAt: new Date(),
+       content,
+       fileUrl: [],
+       senderId: req.user.id,
+       receiverId,
     }).returning();
 
     res.status(201).json(newMessage[0]);
