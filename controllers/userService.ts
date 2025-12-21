@@ -94,6 +94,7 @@ export const getFriendsList = async (req: Request & { user?: { id: string; role:
           name: friend.name,
           email: friend.email,
           avator: friend.avator,
+          isOnline: friend.isOnline
         }
       })
       .from(MessageTable)

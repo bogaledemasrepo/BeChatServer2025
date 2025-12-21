@@ -10,6 +10,7 @@ export const UsersTable = pgTable("users", {
   avator:varchar("avator",{ length: 255 }),
   password:varchar({length:255}).notNull(),
   role:UserRole("userRole").default("CUSTOMER"),
+  isOnline: boolean("is_online").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull()
 });
 
