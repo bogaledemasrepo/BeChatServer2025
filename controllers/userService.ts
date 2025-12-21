@@ -25,21 +25,23 @@ export const updateProfile = async (req: Request & { user?: { id: string; role: 
       return res.status(401).json({ error: "Unauthorized" });
     }
     console.log("Request ",req.body,req.file)
+    const { name, email } = req.body||{};
+    if (!name && !email && !req.file) {
+      return res.status(400).json({ error: "No fields to update" });
+    }
 
     if(req.file){
       const avatorUrl = `${req.protocol}://${req.get("host")}/photos/${req.file.filename}`;
       await db.update(UsersTable).set({ avator: avatorUrl }).where(eq(UsersTable.id, req.user.id));
     }
-    const { name, email } = req.body;
+    
     if (name) {
       await db.update(UsersTable).set({ name }).where(eq(UsersTable.id, req.user.id));
     }
     if (email) {
       await db.update(UsersTable).set({ email }).where(eq(UsersTable.id, req.user.id));
     } 
-    if (!name && !email && !req.file) {
-      return res.status(400).json({ error: "No fields to update" });
-    }
+    
 
     const [user] = await db.select().from(UsersTable).where(eq(UsersTable.id, req.user.id));
     if(!user) throw new Error("Internl server error.")
@@ -148,10 +150,7 @@ export const getFriendsList = async (req: Request & { user?: { id: string; role:
 
   } catch (error) {
     console.error("Get friends error:", error);
-    // Only send if headers haven't been sent yet
-    if (!res.headersSent) {
       return res.status(500).json({ error: "Internal server error" });
-    }
   }
 };
 
@@ -162,7 +161,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = (page - 1) * limit;
-
+// console.log("Get all users req query ",req.query)
     // 2. Fetch paginated data
     const users = await db
       .select()
