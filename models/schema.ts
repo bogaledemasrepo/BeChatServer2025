@@ -22,7 +22,7 @@ export const ProfileTable = pgTable("profile", {
 
 export const MessageTable = pgTable("messages", {
   id: uuid().primaryKey().defaultRandom().notNull(),
-  content: text("content").notNull(),
+  content: text("content"),
   fileUrl: varchar("file_url",{ length: 255 }).array(),
   senderId: uuid("sender_id").references(() => UsersTable.id).notNull(),
   receiverId: uuid("receiver_id").references(() => UsersTable.id).notNull(),
