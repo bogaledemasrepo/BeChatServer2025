@@ -5,7 +5,7 @@ import { deleteProfile, getProfile, updateProfile } from '../controllers/userSer
 const profileRouter = express.Router();
 
 profileRouter.get('/me',authMiddleware,getProfile)
-.put('/me',authMiddleware,updateProfile)
+.put('/me',authMiddleware,express.json(),updateProfile)
 .delete('/me',authMiddleware,deleteProfile);
 
 export default profileRouter;
