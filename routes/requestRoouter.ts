@@ -6,8 +6,8 @@ const requestRouter = express.Router();
 
 requestRouter.post('/',express.json(), authMiddleware,sendFriendRequest);
 requestRouter.get('/',express.json(),authMiddleware,getFriendRequests);
-requestRouter.post('/:requestId/accept',express.json(),authMiddleware,acceptFriendRequest);
-requestRouter.post('/:requestId/reject',express.json(),authMiddleware,rejectFriendRequest);
+requestRouter.patch('/accept',express.json(),authMiddleware,acceptFriendRequest);
+requestRouter.patch('/reject',express.json(),authMiddleware,rejectFriendRequest);
 
 
 export default requestRouter;
