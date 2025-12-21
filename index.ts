@@ -5,6 +5,7 @@ import userRouter from './routes/userRoute';
 import messagesRouter from './routes/messagesRoute';
 import requestRouter from './routes/requestRoouter';
 import { Server, Socket } from 'socket.io'; // Import Server for the instance, Socket for the type
+import profileRouter from './routes/profileRoute';
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use('/api/auth', authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/messages",messagesRouter);
 app.use("/api/requests",requestRouter)
+app.use("/api/profile",profileRouter)
 
 cronJob.start();
 
