@@ -187,3 +187,18 @@ export const getAllUsers = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+export const getUserDetail=async (req: Request & { user?: { id: string; role: string } }, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const userId = req.params.id as string;
+    const [user] = await db.select().from(UsersTable).where(eq(UsersTable.id, userId));
+    console.log(user)
+    if(!user) throw new Error("Internl server error.")
+    res.json({ id: user.id, name: user.name, email: user.email,avator:user.avator });
+  } catch (error) {
+    console.error("Profile error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
