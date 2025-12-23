@@ -15,10 +15,10 @@ export const UsersTable = pgTable("users", {
 });
 
 export const ProfileTable = pgTable("profile", {
-  id: uuid().primaryKey().defaultRandom().notNull(),
+  bio: text("bio"),
   birthDate:date().notNull(),
-  photos:text().array(),
-  userId:uuid("userId").references(()=>UsersTable.id).notNull()
+  photos:text("photos").array(),
+  userId:uuid("userId").primaryKey().references(()=>UsersTable.id).notNull()
 });
 
 export const MessageTable = pgTable("messages", {
