@@ -1,6 +1,10 @@
 # dependencies (bun install)
 node_modules
 
+#uploaded photo
+
+public/photos/*
+
 # output
 out
 dist
