@@ -13,6 +13,11 @@ FROM base AS release
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
+# 1. Create the directory (if it doesn't exist in your repo)
+# 2. Change ownership of the entire app directory to the 'bun' user
+USER root
+RUN mkdir -p public/photos && chown -R bun:bun /usr/src/app
+
 # Express usually runs on 3000 by default
 EXPOSE 3000
 
