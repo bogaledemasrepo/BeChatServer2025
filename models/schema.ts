@@ -1,6 +1,6 @@
+import { sql } from "drizzle-orm";
 import { pgTable, varchar,uuid,text,timestamp, date, pgEnum,boolean} from "drizzle-orm/pg-core";
 export const UserRole=pgEnum("userRole",["ADMIN","CUSTOMER"]);
-export const OrderStatus=pgEnum("orderStatus",["PENDING","ORDERED","SHIPPED","DELIVERED"]);
 export const RequestStatus=pgEnum("requestStatus",["PENDING","ACCEPTED","REJECTED"]);
 
 export const UsersTable = pgTable("users", {
@@ -16,9 +16,9 @@ export const UsersTable = pgTable("users", {
 
 export const ProfileTable = pgTable("profile", {
   bio: text("bio"),
-  birthDate:date().notNull(),
-  photos:text("photos").array(),
-  userId:uuid("userId").primaryKey().references(()=>UsersTable.id).notNull()
+  birthDate: date("birth_date"), // Suggestion: use snake_case for DB columns
+  photos: text("photos").array().default(sql`ARRAY[]::text[]`), 
+  userId: uuid("userId").primaryKey().references(() => UsersTable.id).notNull()
 });
 
 export const MessageTable = pgTable("messages", {

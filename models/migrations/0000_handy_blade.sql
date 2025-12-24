@@ -20,9 +20,9 @@ CREATE TABLE "messages" (
 );
 --> statement-breakpoint
 CREATE TABLE "profile" (
-	"id" uuid DEFAULT gen_random_uuid() NOT NULL,
-	"birthDate" date NOT NULL,
-	"photos" text[],
+	"bio" text,
+	"birth_date" date,
+	"photos" text[] DEFAULT ARRAY[]::text[],
 	"userId" uuid PRIMARY KEY NOT NULL
 );
 --> statement-breakpoint

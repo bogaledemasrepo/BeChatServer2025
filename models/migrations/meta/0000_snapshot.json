@@ -1,5 +1,5 @@
 {
-  "id": "3b6bc994-7e28-43a7-9bf0-a08aa003c865",
+  "id": "6ee31b15-d5c8-4d1c-b670-72e21e0db594",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -167,24 +167,24 @@
       "name": "profile",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
+        "bio": {
+          "name": "bio",
+          "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "default": "gen_random_uuid()"
+          "notNull": false
         },
-        "birthDate": {
-          "name": "birthDate",
+        "birth_date": {
+          "name": "birth_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "photos": {
           "name": "photos",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "ARRAY[]::text[]"
         },
         "userId": {
           "name": "userId",

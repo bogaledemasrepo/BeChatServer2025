@@ -1,6 +1,6 @@
 {
-  "id": "c0e1ce12-5639-4bf9-846d-6ac6f4a2bd2c",
-  "prevId": "3b6bc994-7e28-43a7-9bf0-a08aa003c865",
+  "id": "8c2ba2ee-8913-46cb-b2ea-2e70186f628f",
+  "prevId": "6ee31b15-d5c8-4d1c-b670-72e21e0db594",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -173,17 +173,18 @@
           "primaryKey": false,
           "notNull": false
         },
-        "birthDate": {
-          "name": "birthDate",
+        "birth_date": {
+          "name": "birth_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "photos": {
           "name": "photos",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "ARRAY[]::text[]"
         },
         "userId": {
           "name": "userId",
@@ -290,16 +291,6 @@
     }
   },
   "enums": {
-    "public.orderStatus": {
-      "name": "orderStatus",
-      "schema": "public",
-      "values": [
-        "PENDING",
-        "ORDERED",
-        "SHIPPED",
-        "DELIVERED"
-      ]
-    },
     "public.requestStatus": {
       "name": "requestStatus",
       "schema": "public",
