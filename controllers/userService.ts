@@ -1,9 +1,10 @@
 import type { Request, Response } from "express";
 import db from "../models/index";
 import { UsersTable, MessageTable, ProfileTable } from "../models/schema";
-import { eq, or, sql, desc } from "drizzle-orm";
+import { eq,not, or, sql, desc, ne } from "drizzle-orm";
 import { aliasedTable } from "drizzle-orm/alias";
 import type { UUID } from "crypto";
+import { notEqual } from "assert";
 interface ProfileResponse {
   bio: string;
   birthDate: string;
@@ -244,7 +245,7 @@ export const getFriendsList = async (
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: Request & { user?: { id: UUID; role: string } }, res: Response) => {
   try {
     // 1. Extract and parse query parameters with defaults
     const page = parseInt(req.query.page as string) || 1;
@@ -254,7 +255,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     // 2. Fetch paginated data
     const users = await db
       .select()
-      .from(UsersTable)
+      .from(UsersTable).where(ne(UsersTable.id,req.user?.id||""))
       .limit(limit)
       .offset(offset);
 
