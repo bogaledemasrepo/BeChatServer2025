@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import db from "../models/index";
-import { FriendRequest, MessageTable } from "../models/schema";
+import { FriendRequest, MessageTable, UsersTable } from "../models/schema";
 import { eq } from "drizzle-orm";
 
 export const sendFriendRequest = async (req: Request & { user?: { id: string; role: string } }, res: Response) => {
@@ -12,16 +12,12 @@ export const sendFriendRequest = async (req: Request & { user?: { id: string; ro
     if (!reciverId) {
       return res.status(400).json({ error: "Recipient ID is required" });
     }
-   const friendRequest = await db.insert(FriendRequest).values({
+    const requestedUser = await db.select().from(UsersTable).where(eq(UsersTable.id,reciverId));
+    if(!requestedUser) return res.status(400).json({ error: "Requested user not found!" });
+      await db.insert(FriendRequest).values({
       from: req.user.id,
       to: reciverId
     }).returning();
-    await   db.insert(MessageTable).values({
-      senderId: req.user.id,
-      receiverId: reciverId,
-      content: ""       
-    });
-    console.log("Friend request created:", friendRequest);
     res.status(201).json({ message: "Friend request sent" });
   } catch (error) {
     console.error("Send friend request error:", error);
@@ -38,6 +34,9 @@ export const rejectFriendRequest = async (req: Request & { user?: { id: string; 
     if (!requestId) {
       return res.status(400).json({ error: "Request ID is required" });
     }
+
+      const requestedData = await db.select().from(FriendRequest).where(eq(FriendRequest.id,requestId||""));
+    if(!requestedData) return res.status(400).json({ error: "Request not found!" });
     await db.update(FriendRequest).set({ status: "REJECTED" }).where(eq(FriendRequest.id, requestId) && eq(FriendRequest.to, req.user.id));
     res.status(200).json({ message: "Friend request rejected" });
   } catch (error) {
@@ -51,11 +50,14 @@ export const acceptFriendRequest = async (req: Request & { user?: { id: string; 
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { requestId } = req.body;
+    const { requestId } = req.params;
     if (!requestId) {
       return res.status(400).json({ error: "Request ID is required" });
     }
-    console.log("Accepting friend request:", req.user, requestId);
+
+      const requestedData = await db.select().from(FriendRequest).where(eq(FriendRequest.id,requestId||""));
+    if(!requestedData) return res.status(400).json({ error: "Request not found!" });
+    
     const resp= await db.update(FriendRequest).set({ status: "ACCEPTED" }).where(eq(FriendRequest.id, requestId) && eq(FriendRequest.to, req.user.id)).returning();
 
     if(!resp || !resp[0]){
