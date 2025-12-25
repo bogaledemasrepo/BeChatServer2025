@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { pgTable, varchar,uuid,text,timestamp, date, pgEnum,boolean} from "drizzle-orm/pg-core";
 export const UserRole=pgEnum("userRole",["ADMIN","CUSTOMER"]);
 export const RequestStatus=pgEnum("requestStatus",["PENDING","ACCEPTED","REJECTED"]);

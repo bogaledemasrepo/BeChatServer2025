@@ -30,12 +30,12 @@ export const rejectFriendRequest = async (req: Request & { user?: { id: string; 
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { requestId } = req.params;
+    const { requestId } = req.body;
     if (!requestId) {
       return res.status(400).json({ error: "Request ID is required" });
     }
 
-      const requestedData = await db.select().from(FriendRequest).where(eq(FriendRequest.id,requestId||""));
+    const requestedData = await db.select().from(FriendRequest).where(eq(FriendRequest.id,requestId||""));
     if(!requestedData) return res.status(400).json({ error: "Request not found!" });
     await db.update(FriendRequest).set({ status: "REJECTED" }).where(eq(FriendRequest.id, requestId) && eq(FriendRequest.to, req.user.id));
     res.status(200).json({ message: "Friend request rejected" });
@@ -50,7 +50,7 @@ export const acceptFriendRequest = async (req: Request & { user?: { id: string; 
     if (!req.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
-    const { requestId } = req.params;
+    const { requestId } = req.body;
     if (!requestId) {
       return res.status(400).json({ error: "Request ID is required" });
     }
