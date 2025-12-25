@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import db from "../models/index";
 import { FriendRequest, MessageTable, UsersTable } from "../models/schema";
-import { eq } from "drizzle-orm";
+import { aliasedTable, and, eq } from "drizzle-orm";
 
 export const sendFriendRequest = async (req: Request & { user?: { id: string; role: string } }, res: Response) => {
   try {
@@ -80,19 +80,36 @@ export const acceptFriendRequest = async (req: Request & { user?: { id: string; 
   }
 }
 
-export const getFriendRequests = async (req: Request & { user?: { id: string; role: string } }, res: Response) => {
+export const getFriendRequests = async (req: Request & { user?: { id: string } }, res: Response) => {
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-    const requests = await db.select().from(FriendRequest);
+    if (!req.user) return res.status(401).json({ error: "Unauthorized" });
 
-    console.log("Requests:", requests);
+    // 1. Create aliases for the users table
+    const sender = aliasedTable(UsersTable, "sender");
 
-    //.where(eq(FriendRequest.to, req.user.id) && eq(FriendRequest.status, "PENDING"));
+    const requests = await db
+      .select({
+        id: FriendRequest.id,
+        status: FriendRequest.status,
+        createdAt: FriendRequest.createdAt,
+        // Populate specific sender fields
+        sender: {
+          id: sender.id,
+          name: sender.name,
+          avator: sender.avator,
+        },
+      })
+      .from(FriendRequest)
+      .leftJoin(sender, eq(FriendRequest.from, sender.id)) // Join the sender
+      .where(
+        and(
+          eq(FriendRequest.to, req.user.id),
+          eq(FriendRequest.status, "PENDING")
+        )
+      );
+
     res.status(200).json({ requests });
   } catch (error) {
-    console.error("Get friend requests error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
-}   
+}; 
